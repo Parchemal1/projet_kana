@@ -1,228 +1,178 @@
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background-color: #f9fafb;
-  color: #1f2937;
-  margin: 0;
-  padding: 0;
+:root {
+  /* Palette Sakura Sombre */
+  --sakura-pink: #ffb7c5;
+  --sakura-hot-pink: #ff69b4;
+  --bg-overlay: rgba(26, 16, 18, 0.9);
+  --bg-card: rgba(45, 27, 30, 0.9);
+  --text-light: #ffe4e9;
+  --text-muted: #d1a3ac;
 }
 
-#root {
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-light);
+  background-image:
+          linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+          url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
   display: flex;
-  justify-content: center;
-  width: 100%;
+  flex-direction: column;
+  align-items: center;
   min-height: 100vh;
 }
 
-/* --- Le conteneur de l'application --- */
-.app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 800px;
-  padding: 2rem;
-  margin: 0 auto;
-}
-
 h1 {
-  text-align: center;
-  margin-bottom: 3rem;
-  color: #111827;
-}
-
-/* --- Section et Titres --- */
-.kana-section {
-  width: 100%;
-  margin-bottom: 3rem;
-}
-
-.section-title {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 0.5rem;
-}
-
-/* --- La Grille --- */
-.kana-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.5rem;
-  width: 100%;
-}
-
-/* --- Les Cartes --- */
-.kana-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem 1rem;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-}
-
-.kana-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  border-color: #d1d5db;
-}
-
-.kana-character {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #111827;
-}
-
-.kana-romanji {
-  color: #6b7280;
-  font-size: 1rem;
-  font-family: monospace;
-}
-
-/* --- Navigation --- */
-.tab-container {
-  display: flex;
-  gap: 1rem;
+  color: var(--sakura-pink);
+  text-shadow: 0 0 20px rgba(255, 183, 197, 0.6);
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   margin-bottom: 2rem;
-  background-color: #e5e7eb;
-  padding: 0.5rem;
-  border-radius: 0.75rem;
+  text-align: center;
 }
 
-.tab-button {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 0.5rem;
-  background-color: transparent;
-  color: #4b5563;
-  cursor: pointer;
-  transition: all 0.2s;
-}
 
-.tab-button:hover {
-  color: #111827;
-}
-
-.tab-button.active {
-  background-color: white;
-  color: #111827;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-/* --- Navigation Principale --- */
 .main-nav {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.4rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 183, 197, 0.3);
+  backdrop-filter: blur(5px);
+  margin-bottom: 1.5rem;
 }
 
 .main-nav button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background-color: white;
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 40px;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .main-nav button.active {
-  background-color: #111827;
+  background: var(--sakura-hot-pink);
   color: white;
-  border-color: #111827;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
 }
 
-/* --- Interface du Quiz --- */
+
+.script-selection {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 0.8rem 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 183, 197, 0.2);
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.kana-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.kana-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 183, 197, 0.15);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.kana-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--sakura-pink);
+}
+
+.kana-character {
+  color: var(--sakura-pink);
+  font-size: 2rem;
+  display: block;
+}
+
+.kana-romanji {
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+
 .quiz-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 400px;
+  margin: 0 auto;
 }
 
 .score-display {
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-size: 1.2rem;
   margin-bottom: 1.5rem;
-  color: #374151;
+  color: var(--sakura-pink);
 }
 
 .quiz-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 183, 197, 0.2);
+  border-radius: 25px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 200px;
-  background-color: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 1rem;
-  margin-bottom: 1.5rem;
-  transition: all 0.3s ease;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.quiz-card.correct {
-  border-color: #22c55e;
-  background-color: #f0fdf4;
-}
-
-.quiz-card.incorrect {
-  border-color: #ef4444;
-  background-color: #fef2f2;
-}
-
-.correction {
-  margin-top: 1rem;
-  color: black;
-  font-weight: bold;
-  font-size: 1.2rem;
+.quiz-card .kana-character {
+  font-size: 5rem;
 }
 
 .quiz-form {
   display: flex;
-  width: 100%;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .quiz-form input {
   flex: 1;
-  padding: 0.75rem;
-  font-size: 1.2rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 183, 197, 0.3);
+  border-radius: 12px;
+  padding: 0.8rem;
+  color: white;
   text-align: center;
-  outline: none;
-}
-
-.quiz-form input:focus {
-  border-color: #3b82f6;
+  font-size: 1.2rem;
 }
 
 .quiz-form button {
-  padding: 0 1.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  background-color: #3b82f6;
+  background: var(--sakura-hot-pink);
   color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 12px;
+  padding: 0 1.5rem;
+  font-weight: bold;
   cursor: pointer;
-}
-
-.quiz-form button:disabled {
-  background-color: #9ca3af;
-  cursor: not-allowed;
 }

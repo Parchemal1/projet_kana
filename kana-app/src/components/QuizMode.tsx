@@ -1,67 +1,49 @@
-import { useState } from 'react';
-import type {Kana} from '../data/kana';
+import type { Kana } from '../data/kana';
 
 interface QuizModeProps {
     script: 'hiragana' | 'katakana';
     kanaData: Kana[];
+    quizState: {
+        currentIndex: number;
+        userAnswer: string;
+        score: { correct: number; total: number };
+        feedback: string;
+    };
+    onAnswerSubmit: (e: React.FormEvent) => void;
+    onUserAnswerChange: (value: string) => void;
 }
 
-export default function QuizMode({ script, kanaData }: QuizModeProps) {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [userAnswer, setUserAnswer] = useState('');
-    const [score, setScore] = useState({ correct: 0, total: 0 });
-    const [feedback, setFeedback] = useState('');
+export default function QuizMode({ script, kanaData, quizState, onAnswerSubmit, onUserAnswerChange }: QuizModeProps) {
+    const currentKana = kanaData[quizState.currentIndex];
+    const displayChar = script === 'hiragana' ? currentKana.hiragana : currentKana.katakana;
 
-    const currentKana = kanaData[currentIndex];
-
-    const displayChar = script === 'hiragana'
-        ? currentKana.hiragana
-        : currentKana.katakana;
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!currentKana) return;
-
-        const isCorrect = userAnswer.toLowerCase().trim() === currentKana.romanji.toLowerCase();
-
-        setScore({
-            correct: score.correct + (isCorrect ? 1 : 0),
-            total: score.total + 1
-        });
-
-        setFeedback(isCorrect ? 'Correct !' : `Incorrect. C'était ${currentKana.romanji}`);
-        setUserAnswer('');
-
-        setTimeout(() => {
-            setCurrentIndex((currentIndex + 1) % kanaData.length);
-            setFeedback('');
-        }, 1500);
-    };
+    const feedbackClass = quizState.feedback
+        ? (quizState.feedback.includes('Correct') ? 'correct' : 'incorrect')
+        : '';
 
     return (
         <div className="quiz-container">
             <div className="score-display">
-                Score : {score.correct} / {score.total}
+                Score : {quizState.score.correct} / {quizState.score.total}
             </div>
 
-            <div className={`quiz-card ${feedback.includes('Correct') ? 'correct' : ''} ${feedback.includes('Incorrect') ? 'incorrect' : ''}`}>
+            <div className={`quiz-card ${feedbackClass}`}>
                 <div className="kana-character">
                     {displayChar}
                 </div>
-                {feedback && <div className="correction">{feedback}</div>}
+                {quizState.feedback && <div className="correction">{quizState.feedback}</div>}
             </div>
 
-            <form onSubmit={handleSubmit} className="quiz-form">
+            <form onSubmit={onAnswerSubmit} className="quiz-form">
                 <input
                     type="text"
-                    value={userAnswer}
-                    onChange={e => setUserAnswer(e.target.value)}
+                    value={quizState.userAnswer}
+                    onChange={e => onUserAnswerChange(e.target.value)}
                     placeholder="Rōmaji..."
-                    disabled={feedback !== ''}
+                    disabled={quizState.feedback !== ''}
                     autoFocus
                 />
-                <button type="submit" disabled={feedback !== '' || userAnswer.trim() === ''}>
+                <button type="submit" disabled={quizState.feedback !== '' || quizState.userAnswer.trim() === ''}>
                     Valider
                 </button>
             </form>

@@ -12,7 +12,6 @@ export default function StudyMode({ script, kanaData }: StudyModeProps) {
             {kanaData.map((kana) => (
                 <CharacterCard
                     key={kana.romanji}
-                    // On choisit dynamiquement la bonne lettre selon le script sélectionné
                     character={script === 'hiragana' ? kana.hiragana : kana.katakana}
                     romanji={kana.romanji}
                 />
