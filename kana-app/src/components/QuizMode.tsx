@@ -1,51 +1,52 @@
-import type { Kana } from '../data/kana';
+import {useEffect, useRef} from 'react';
+import type {Kana} from '../data/kana';
+import {useQuiz} from '../hooks/useQuiz';
 
 interface QuizModeProps {
     script: 'hiragana' | 'katakana';
     kanaData: Kana[];
-    quizState: {
-        currentIndex: number;
-        userAnswer: string;
-        score: { correct: number; total: number };
-        feedback: string;
-    };
-    onAnswerSubmit: (e: React.FormEvent) => void;
-    onUserAnswerChange: (value: string) => void;
 }
 
-export default function QuizMode({ script, kanaData, quizState, onAnswerSubmit, onUserAnswerChange }: QuizModeProps) {
-    const currentKana = kanaData[quizState.currentIndex];
-    const displayChar = script === 'hiragana' ? currentKana.hiragana : currentKana.katakana;
+export default function QuizMode({script, kanaData}: QuizModeProps) {
+    const {
+        currentIndex,
+        userAnswer,
+        setUserAnswer,
+        score,
+        record,
+        feedback,
+        feedbackClass,
+        displayChar,
+        handleAnswerSubmit
+    } = useQuiz(kanaData, script);
 
-    const feedbackClass = quizState.feedback
-        ? (quizState.feedback.includes('Correct') ? 'correct' : 'incorrect')
-        : '';
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (feedback === '' && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [currentIndex, feedback]);
 
     return (
         <div className="quiz-container">
             <div className="score-display">
-                Score : {quizState.score.correct} / {quizState.score.total}
+                Score : {score.correct} / {score.total} | Record : {record}
             </div>
-
             <div className={`quiz-card ${feedbackClass}`}>
-                <div className="kana-character">
-                    {displayChar}
-                </div>
-                {quizState.feedback && <div className="correction">{quizState.feedback}</div>}
+                <div className="kana-character">{displayChar}</div>
+                {feedback && <div className="correction">{feedback}</div>}
             </div>
-
-            <form onSubmit={onAnswerSubmit} className="quiz-form">
+            <form onSubmit={handleAnswerSubmit} className="quiz-form">
                 <input
+                    ref={inputRef}
                     type="text"
-                    value={quizState.userAnswer}
-                    onChange={e => onUserAnswerChange(e.target.value)}
+                    value={userAnswer}
+                    onChange={(e) => setUserAnswer(e.target.value)}
                     placeholder="Rōmaji..."
-                    disabled={quizState.feedback !== ''}
-                    autoFocus
+                    disabled={feedback !== ''}
                 />
-                <button type="submit" disabled={quizState.feedback !== '' || quizState.userAnswer.trim() === ''}>
-                    Valider
-                </button>
+                <button type="submit" disabled={feedback !== '' || userAnswer.trim() === ''}>Valider</button>
             </form>
         </div>
     );
